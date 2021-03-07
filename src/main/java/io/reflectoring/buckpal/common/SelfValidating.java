@@ -1,11 +1,7 @@
 package io.reflectoring.buckpal.common;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.Set;
+import javax.validation.*;
 
 public abstract class SelfValidating<T> {
 
@@ -17,8 +13,8 @@ public abstract class SelfValidating<T> {
   }
 
   /**
-   * Evaluates all Bean Validations on the attributes of this
-   * instance.
+   Evaluates all Bean Validations on the attributes of this
+   instance.
    */
   protected void validateSelf() {
     Set<ConstraintViolation<T>> violations = validator.validate((T) this);

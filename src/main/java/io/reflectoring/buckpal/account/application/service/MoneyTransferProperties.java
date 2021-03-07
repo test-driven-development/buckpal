@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Configuration properties for money transfer use cases.
+ Configuration properties for money transfer use cases.
  */
 @Data
 @AllArgsConstructor
@@ -14,5 +14,4 @@ import lombok.NoArgsConstructor;
 public class MoneyTransferProperties {
 
   private Money maximumTransferThreshold = Money.of(1_000_000L);
-
 }

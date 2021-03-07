@@ -1,10 +1,9 @@
 package io.reflectoring.buckpal.archunit;
 
+import com.tngtech.archunit.core.domain.JavaClasses;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import com.tngtech.archunit.core.domain.JavaClasses;
 
 public class HexagonalArchitecture extends ArchitectureElement {
 
@@ -13,12 +12,12 @@ public class HexagonalArchitecture extends ArchitectureElement {
   private String configurationPackage;
   private List<String> domainPackages = new ArrayList<>();
 
-  public static HexagonalArchitecture boundedContext(String basePackage) {
-    return new HexagonalArchitecture(basePackage);
-  }
-
   public HexagonalArchitecture(String basePackage) {
     super(basePackage);
+  }
+
+  public static HexagonalArchitecture boundedContext(String basePackage) {
+    return new HexagonalArchitecture(basePackage);
   }
 
   public Adapters withAdaptersLayer(String adaptersPackage) {
@@ -32,7 +31,8 @@ public class HexagonalArchitecture extends ArchitectureElement {
   }
 
   public ApplicationLayer withApplicationLayer(String applicationPackage) {
-    this.applicationLayer = new ApplicationLayer(fullQualifiedPackage(applicationPackage), this);
+    this.applicationLayer =
+      new ApplicationLayer(fullQualifiedPackage(applicationPackage), this);
     return this.applicationLayer;
   }
 
@@ -43,9 +43,15 @@ public class HexagonalArchitecture extends ArchitectureElement {
 
   private void domainDoesNotDependOnOtherPackages(JavaClasses classes) {
     denyAnyDependency(
-        this.domainPackages, Collections.singletonList(adapters.basePackage), classes);
+      this.domainPackages,
+      Collections.singletonList(adapters.basePackage),
+      classes
+    );
     denyAnyDependency(
-        this.domainPackages, Collections.singletonList(applicationLayer.basePackage), classes);
+      this.domainPackages,
+      Collections.singletonList(applicationLayer.basePackage),
+      classes
+    );
   }
 
   public void check(JavaClasses classes) {
@@ -53,9 +59,14 @@ public class HexagonalArchitecture extends ArchitectureElement {
     this.adapters.dontDependOnEachOther(classes);
     this.adapters.doesNotDependOn(this.configurationPackage, classes);
     this.applicationLayer.doesNotContainEmptyPackages();
-    this.applicationLayer.doesNotDependOn(this.adapters.getBasePackage(), classes);
+    this.applicationLayer.doesNotDependOn(
+        this.adapters.getBasePackage(),
+        classes
+      );
     this.applicationLayer.doesNotDependOn(this.configurationPackage, classes);
-    this.applicationLayer.incomingAndOutgoingPortsDoNotDependOnEachOther(classes);
+    this.applicationLayer.incomingAndOutgoingPortsDoNotDependOnEachOther(
+        classes
+      );
     this.domainDoesNotDependOnOtherPackages(classes);
   }
 }

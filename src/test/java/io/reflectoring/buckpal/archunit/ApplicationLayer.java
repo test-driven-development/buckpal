@@ -1,9 +1,8 @@
 package io.reflectoring.buckpal.archunit;
 
+import com.tngtech.archunit.core.domain.JavaClasses;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.tngtech.archunit.core.domain.JavaClasses;
 
 public class ApplicationLayer extends ArchitectureElement {
 
@@ -12,7 +11,10 @@ public class ApplicationLayer extends ArchitectureElement {
   private List<String> outgoingPortsPackages = new ArrayList<>();
   private List<String> servicePackages = new ArrayList<>();
 
-  public ApplicationLayer(String basePackage, HexagonalArchitecture parentContext) {
+  public ApplicationLayer(
+    String basePackage,
+    HexagonalArchitecture parentContext
+  ) {
     super(basePackage);
     this.parentContext = parentContext;
   }
@@ -40,9 +42,19 @@ public class ApplicationLayer extends ArchitectureElement {
     denyDependency(this.basePackage, packageName, classes);
   }
 
-  public void incomingAndOutgoingPortsDoNotDependOnEachOther(JavaClasses classes) {
-    denyAnyDependency(this.incomingPortsPackages, this.outgoingPortsPackages, classes);
-    denyAnyDependency(this.outgoingPortsPackages, this.incomingPortsPackages, classes);
+  public void incomingAndOutgoingPortsDoNotDependOnEachOther(
+    JavaClasses classes
+  ) {
+    denyAnyDependency(
+      this.incomingPortsPackages,
+      this.outgoingPortsPackages,
+      classes
+    );
+    denyAnyDependency(
+      this.outgoingPortsPackages,
+      this.incomingPortsPackages,
+      classes
+    );
   }
 
   private List<String> allPackages() {
